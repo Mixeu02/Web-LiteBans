@@ -1,14 +1,8 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
+async function banlist(){
+    const db = require("../mysql");
 
-app.use(cors());
-
-app.get("/banlist", async (req, res) => {
-    const db = require("./mysql");
-    
     const bans = [];
-    
+
     await db.query(`SELECT * FROM litebans_bans ORDER BY id DESC LIMIT 50`, (err, data) => {
         if (err){
             console.log(err);
@@ -29,15 +23,13 @@ app.get("/banlist", async (req, res) => {
                         ipban: data[0].ipban
                     })
                 }
-             });
+            });
         });
     });
 
-    setTimeout(() => {
-        res.send(bans);
-    }, 1000)
-});
+    setTimeout(() => {}, 1000);
+    
+    return bans; 
+};
 
-app.listen(3001, () => {
-    console.log("Backend On");
-});
+module.exports = banlist();
