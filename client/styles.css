@@ -6,25 +6,38 @@ body{
     text-align: center;
     margin: 0;
     background-color: #313338;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
 }
 
+li{
+    margin: 30px 0;
+  }
+
 #list{
+    align-self: center;
     list-style-type: none;
     background-color: #313338;
     font-family: 'Poppins', sans-serif;
+    width: 75%;
 }
 
 .slotBg{
     background-color: rgb(30, 30, 30);
     transition: 0.5s;
-}
+    height: 80px;
+    display: flex;
+} 
 
 .slotBg:hover{
     background-color: rgb(30, 30, 30);
-    transform: scale(1.1);
+    transform: scale(1);
     transition: 0.5s;
 }
 
 .nameText{
     color: white;
+    align-self: center;
+    margin-left: 20px;
 }
