@@ -13,7 +13,13 @@ async function getAPI(){
         data.map((d) => {
             const list = document.getElementById("list");
             const entry = document.createElement("li");
-            entry.appendChild(document.createTextNode(d.name));
+            const bg = document.createElement("div");
+            bg.className = "slotBg";
+            const nameText = document.createElement("p");
+            nameText.className = "nameText";
+            nameText.innerHTML = d.name
+            entry.appendChild(bg)
+            bg.appendChild(nameText);
             list.appendChild(entry);
         }) 
     }, 1000)
