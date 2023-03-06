@@ -27,7 +27,7 @@ app.get("/banlist", async (req, res) => {
                         date: data1[0].date,
                         reason: data[0].reason,
                         ipban: data[0].ipban
-                    })
+                    });
                 }
              });
         });
