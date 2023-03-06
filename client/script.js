@@ -8,7 +8,14 @@ async function getAPI(){
     };
 
     setTimeout(() => {
-        console.log(httpGet("http://localhost:3001/banlist"));
+        const data = JSON.parse(httpGet("http://localhost:3001/banlist"));
+        
+        data.map((d) => {
+            const list = document.getElementById("list");
+            const entry = document.createElement("li");
+            entry.appendChild(document.createTextNode(d.name));
+            list.appendChild(entry);
+        }) 
     }, 1000)
 }
 getAPI();
