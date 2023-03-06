@@ -24,6 +24,7 @@ app.get("/banlist", async (req, res) => {
                     bans.push({
                         id: data1[0].id,
                         name: data1[0].name,
+                        uuid: data1[0].uuid,
                         date: data1[0].date,
                         reason: data[0].reason,
                         ipban: data[0].ipban
