@@ -15,14 +15,23 @@ async function getAPI(){
             const entry = document.createElement("li");
             const bg = document.createElement("div");
             bg.className = "slotBg";
+
             const head = document.createElement("img");
-            head.src = `https://api.mineatar.io/face/${d.uuid}?scale=4`
+            head.className = "head";
+            head.src = `https://api.mineatar.io/face/${d.uuid}?scale=4`;
+
             const nameText = document.createElement("p");
             nameText.className = "nameText";
-            nameText.innerHTML = d.name
+            nameText.innerHTML = d.name;
+
+            const reasonText = document.createElement("p");
+            reasonText.className = "reasonText";
+            reasonText.innerHTML = d.reason;
+
             entry.appendChild(bg);
-            bg.appendChild(nameText);
             bg.appendChild(head);
+            bg.appendChild(nameText);
+            bg.appendChild(reasonText);
             list.appendChild(entry);
         }) 
     }, 1000)
