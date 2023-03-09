@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 
 app.use(cors());
+app.use(express.json());
 
 const db = require("./mysql");
 
@@ -27,7 +28,9 @@ app.get("/banlist", async (req, res) => {
                         uuid: data1[0].uuid,
                         date: data1[0].date,
                         reason: data[0].reason,
-                        ipban: data[0].ipban
+                        ipban: data[0].ipban,
+                        moderator: data[0].banned_by_name,
+                        until: data[0].until
                     });
                 }
              });
@@ -36,19 +39,19 @@ app.get("/banlist", async (req, res) => {
 
     setTimeout(() => {
         res.send(bans);
-    }, 1000)
+    }, 1000);
 });
 
-app.get("/bansearch", async (req, res) => {
-    const name = req.name
+app.post("/bansearch", async (req, res) => {
+    const name = req.body.name;
 
-    await db.query(`SELECT * FROM litebans_hisory WHERE name=${name}`, async (err, data) => {
+    await db.query(`SELECT * FROM litebans_history WHERE name='${name}'`, async (err, data) => {
         if (err){
             console.log(err);
             return;
         }
         if (data.length > 0){
-            await db.query(`SELECT * FROM litebans_bans WHERE uuid=${data[0].uuid}`, (err1, data1) => {
+            await db.query(`SELECT * FROM litebans_bans WHERE uuid='${data[0].uuid}'`, (err1, data1) => {
                 if (err1){
                     console.log(err1);
                     return;
@@ -59,7 +62,9 @@ app.get("/bansearch", async (req, res) => {
                         name: data1[0].name,
                         date: data1[0].date,
                         reason: data[0].reason,
-                        ipban: data[0].ipban
+                        ipban: data[0].ipban,
+                        moderator: data1[0].banned_by_name,
+                        until: data[0].until
                     });
                 }
                 else{
