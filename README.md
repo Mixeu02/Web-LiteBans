@@ -13,6 +13,6 @@ USER='your_database_user'
 PASSWORD='your_database_password'
 DATABASE='your_database'
 
-BANS_table='litebans_bans' //dont change this unless youve changed the name of the table
-HISTORY_table='litebans_history' //dont change this unless youve changed the name of the table
+BANS_table='litebans_bans' // don't change this unless you've changed the name of the table
+HISTORY_table='litebans_history' //don't change this unless you've changed the name of the table
 ```
