@@ -6,7 +6,7 @@ A way to visualize and manage via a website the LiteBans's bans in your Minecraf
 
 ## Using your database
 ```env
-// .env file
+// server/.env file
 
 HOST='your_database_adress'
 USER='your_database_user'
