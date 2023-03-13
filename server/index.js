@@ -7,35 +7,42 @@ app.use(express.json());
 
 const db = require("./mysql");
 
-app.get("/banlist", async (req, res) => {
+app.post("/banlist", async (req, res) => {
     const bans = [];
-    
-    await db.query(`SELECT * FROM litebans_bans ORDER BY id DESC LIMIT 50`, (err, data) => {
+    const lastID = req.body.lastID;
+
+    await db.query(`SELECT * FROM litebans_bans ORDER BY id DESC LIMIT 1`, async (err, data) => {
         if (err){
             console.log(err);
             return;
         }
-        data.map(async (d) => {
-            await db.query(`SELECT * FROM litebans_history WHERE uuid='${d.uuid}' ORDER BY id DESC`, (err1, data1) => {
-                if (err1){
-                    console.log(err1);
-                    return;
-                }
-                if (data1.length > 0){
-                    bans.push({
-                        id: data1[0].id,
-                        name: data1[0].name,
-                        uuid: data1[0].uuid,
-                        date: data1[0].date,
-                        reason: data[0].reason,
-                        ipban: data[0].ipban,
-                        moderator: data[0].banned_by_name,
-                        until: data[0].until
-                    });
-                }
-             });
+        await db.query(`SELECT * FROM litebans_bans WHERE id <= ${data[0].id - lastID} AND id >= ${(data[0].id - lastID) - lastID} ORDER BY id DESC LIMIT 25`, (err1, data1) => {
+            if (err1){
+                console.log(err1);
+                return;
+            }
+            data1.map(async (d) => {
+                await db.query(`SELECT * FROM litebans_history WHERE uuid='${d.uuid}' ORDER BY id DESC`, (err2, data2) => {
+                    if (err2){
+                        console.log(err2);
+                        return;
+                    }
+                    if (data1.length > 0){
+                        bans.push({
+                            id: data2[0].id,
+                            name: data2[0].name,
+                            uuid: data2[0].uuid,
+                            date: data2[0].date,
+                            reason: data1[0].reason,
+                            ipban: data1[0].ipban,
+                            moderator: data1[0].banned_by_name,
+                            until: data1[0].until
+                        });
+                    }
+                 });
+            });
         });
-    });
+    })
 
     setTimeout(() => {
         res.send(bans);
@@ -59,12 +66,13 @@ app.post("/bansearch", async (req, res) => {
                 if (data1.length > 0){
                     res.send({
                         id: data1[0].id,
-                        name: data1[0].name,
-                        date: data1[0].date,
-                        reason: data[0].reason,
-                        ipban: data[0].ipban,
+                        name: data[0].name,
+                        uuid: data1[0].uuid,
+                        date: data1[0].removed_by_date,
+                        reason: data1[0].reason,
+                        ipban: data1[0].ipban,
                         moderator: data1[0].banned_by_name,
-                        until: data[0].until
+                        until: data1[0].until
                     });
                 }
                 else{
